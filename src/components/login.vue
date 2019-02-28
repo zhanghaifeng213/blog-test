@@ -55,6 +55,7 @@
 import axios from "axios";
 export default {
   name: "login",
+  props: ["valueNum"],
   data() {
     var checkUsername = (rule, value, callback) => {
       if (!value) {
@@ -133,6 +134,7 @@ export default {
                   type: "success"
                 });
                 this.$router.push({ name: "home" });
+                this.$emit("closeModel");
               } else {
                 this.$message({
                   message: res.data.errMsg,
@@ -155,6 +157,17 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     }
+  },
+  watch: {
+    valueNum(Nval, Oval) {
+      this.$nextTick(() => {
+        if (this.Nval === 0) {
+          this.activeName = "login";
+        } else {
+          this.activeName = "reg";
+        }
+      });
+    }
   }
 };
 </script>
@@ -162,10 +175,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .login {
-  padding: 50px;
   margin: 0 auto;
   .el-tabs {
-    width: 500px;
     margin: 0 auto;
     .el-input {
       width: 300px;
