@@ -53,6 +53,8 @@
 
 <script>
 import axios from "axios";
+import { login } from "@/api/user.js";
+import { mapState, mapMutations } from "vuex";
 export default {
   name: "login",
   props: ["valueNum"],
@@ -111,24 +113,37 @@ export default {
         checkPass: [{ validator: validatePass2, trigger: "blur" }],
         // age: [{ validator: checkAge, trigger: "blur" }]
         username: [{ required: true, trigger: "blur" }]
-      },
-      activeName: "login"
+      }
     };
   },
+  computed: {
+    activeName() {
+      if (this.valueNum == 0) {
+        return "login";
+      } else {
+        return "reg";
+      }
+    }
+  },
   methods: {
+    ...mapMutations({
+      setUsername: "setUsername", // 将 `this.increase()` 映射为 `this.$store.commit('increase')`
+      setLogin: "setLogin"
+    }),
     handleClick(tab, event) {
       console.log(tab, event);
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          axios
-            .post("/proxyApi/user/login", {
-              username: this.ruleForm1.username,
-              password: this.ruleForm1.pass
-            })
+          login({
+            username: this.ruleForm1.username,
+            password: this.ruleForm1.pass
+          })
             .then(res => {
               if (res.data.code == 1) {
+                this.setUsername(this.ruleForm1.username);
+                this.setLogin(true);
                 this.$message({
                   message: res.data.msg,
                   type: "success"
@@ -156,17 +171,6 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-    }
-  },
-  watch: {
-    valueNum(Nval, Oval) {
-      this.$nextTick(() => {
-        if (this.Nval === 0) {
-          this.activeName = "login";
-        } else {
-          this.activeName = "reg";
-        }
-      });
     }
   }
 };

@@ -17,8 +17,22 @@
         </el-menu>
       </div>
       <div class="reg-and-login">
-        <el-button type="text" @click="login">登陆</el-button>
-        <el-button type="text" @click="reg">注册</el-button>
+        <div class="user-info" v-if="hasLogin">
+          <el-button type="text">个人中心</el-button>
+          <el-dropdown @command="logout">
+            <span class="avatar-wrap">
+              <img width="40" height="40" src="../assets/logo.png">
+              <span>{{username}}</span>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>退了</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <div v-else>
+          <el-button type="text" @click="login">登陆</el-button>
+          <el-button type="text" @click="reg">注册</el-button>
+        </div>
       </div>
     </div>
     <login-and-reg ref="model"></login-and-reg>
@@ -27,13 +41,24 @@
 </template>
 <script>
 import LoginAndReg from "./login-and-reg.vue";
+import { mapState, mapMutations } from "vuex";
 export default {
   data() {
     return {
       activeIndex: "1"
     };
   },
+  mounted() {},
+  computed: {
+    ...mapState({
+      username: state => state.username,
+      hasLogin: state => state.hasLogin
+    })
+  },
   methods: {
+    ...mapMutations({
+      setLogout: "setLogout"
+    }),
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
@@ -42,6 +67,10 @@ export default {
     },
     reg() {
       this.$refs.model.init(1);
+    },
+    logout() {
+      console.log("logout");
+      this.setLogout();
     }
   },
   components: {
@@ -56,6 +85,16 @@ export default {
   align-items: center;
   padding: 0 200px;
   background: #fff;
+  .user-info {
+    display: flex;
+    .el-button {
+      margin-right: 20px;
+    }
+    .avatar-wrap {
+      display: flex;
+      align-items: center;
+    }
+  }
 }
 </style>
 
