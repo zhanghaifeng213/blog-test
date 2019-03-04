@@ -2,11 +2,14 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Cookies from "js-cookie";
 import { clearLoginInfo } from "@/libs/tool.js"
+import { info } from '../api/user';
 Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     username: Cookies.get("username"),
-    hasLogin: Cookies.get("username")
+    hasLogin: Cookies.get("username"),
+    avatar: "",
+    role: ''
   },
   mutations: {
     setUsername(state, val) {
@@ -20,6 +23,22 @@ const store = new Vuex.Store({
       clearLoginInfo()
       state.hasLogin = false
       state.username = ''
+    },
+    setAvatar(state, val) {
+      state.avatar = val
+    },
+    setRole(state, val) {
+      state.role = val
+    }
+  },
+  actions: {
+    handleInfo({ commit }) {
+      info().then(res => {
+        if (res.data.data) {
+          commit('setAvatar', res.data.data.avatar)
+          commit('setRole', res.data.data.role)
+        }
+      })
     }
   }
 

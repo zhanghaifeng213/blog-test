@@ -53,8 +53,8 @@
 
 <script>
 import axios from "axios";
-import { login } from "@/api/user.js";
-import { mapState, mapMutations } from "vuex";
+import { login, reg } from "@/api/user.js";
+import { mapState, mapMutations, mapActions } from "vuex";
 export default {
   name: "login",
   props: ["valueNum"],
@@ -117,11 +117,16 @@ export default {
     };
   },
   computed: {
-    activeName() {
-      if (this.valueNum == 0) {
-        return "login";
-      } else {
-        return "reg";
+    activeName: {
+      get: function() {
+        if (this.valueNum == 0) {
+          return "login";
+        } else {
+          return "reg";
+        }
+      },
+      set: function(value) {
+        return value;
       }
     }
   },
@@ -130,39 +135,55 @@ export default {
       setUsername: "setUsername", // 将 `this.increase()` 映射为 `this.$store.commit('increase')`
       setLogin: "setLogin"
     }),
+    ...mapActions({ handleInfo: "handleInfo" }),
     handleClick(tab, event) {
-      console.log(tab, event);
+      console.log(tab);
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          login({
-            username: this.ruleForm1.username,
-            password: this.ruleForm1.pass
-          })
-            .then(res => {
-              if (res.data.code == 1) {
-                this.setUsername(this.ruleForm1.username);
-                this.setLogin(true);
+          if (formName == "ruleForm1") {
+            login({
+              username: this.ruleForm1.username,
+              password: this.ruleForm1.pass
+            })
+              .then(res => {
+                if (res.data.status == "success") {
+                  this.setUsername(this.ruleForm1.username);
+                  this.setLogin(true);
+                  this.handleInfo().then(res => {
+                    console.log(res);
+                  });
+                  this.$message({
+                    message: res.data.data,
+                    type: "success"
+                  });
+                  this.$router.push({ name: "home" });
+                  this.$emit("closeModel");
+                } else {
+                  this.$message({
+                    message: res.data.data,
+                    type: "error"
+                  });
+                }
+              })
+              .catch(err => {
                 this.$message({
-                  message: res.data.msg,
-                  type: "success"
-                });
-                this.$router.push({ name: "home" });
-                this.$emit("closeModel");
-              } else {
-                this.$message({
-                  message: res.data.errMsg,
+                  message: "服务器错误",
                   type: "error"
                 });
-              }
-            })
-            .catch(err => {
+              });
+          } else {
+            reg({
+              username: this.ruleForm2.username,
+              password: this.ruleForm2.pass
+            }).then(res => {
               this.$message({
-                message: "服务器错误",
-                type: "error"
+                message: res.data.data,
+                type: "success"
               });
             });
+          }
         } else {
           console.log("error submit!!");
           return false;

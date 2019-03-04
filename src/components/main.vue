@@ -21,7 +21,7 @@
           <el-button type="text">个人中心</el-button>
           <el-dropdown @command="logout">
             <span class="avatar-wrap">
-              <img width="40" height="40" src="../assets/logo.png">
+              <img width="40" height="40" :src="changeImg(avatar)">
               <span>{{username}}</span>
             </span>
             <el-dropdown-menu slot="dropdown">
@@ -52,7 +52,8 @@ export default {
   computed: {
     ...mapState({
       username: state => state.username,
-      hasLogin: state => state.hasLogin
+      hasLogin: state => state.hasLogin,
+      avatar: state => state.avatar
     })
   },
   methods: {
@@ -71,6 +72,9 @@ export default {
     logout() {
       console.log("logout");
       this.setLogout();
+    },
+    changeImg(url) {
+      return process.env.ROOT + url;
     }
   },
   components: {
