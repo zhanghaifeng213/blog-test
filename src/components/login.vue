@@ -1,48 +1,60 @@
 <template>
   <div class="login">
-    <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="登陆" name="login">
-        <el-form
-          :model="ruleForm1"
-          status-icon
-          :rules="rules1"
-          ref="ruleForm1"
-          label-width="100px"
-          class="demo-ruleForm"
-        >
-          <el-form-item label="用户名" prop="username">
+    <el-tabs v-model="activeName"
+             @tab-click="handleClick">
+      <el-tab-pane label="登陆"
+                   name="login">
+        <el-form :model="ruleForm1"
+                 status-icon
+                 :rules="rules1"
+                 ref="ruleForm1"
+                 label-width="100px"
+                 class="demo-ruleForm">
+          <el-form-item label="用户名"
+                        prop="username">
             <el-input v-model="ruleForm1.username"></el-input>
           </el-form-item>
-          <el-form-item label="密码" prop="pass">
-            <el-input type="password" v-model="ruleForm1.pass" autocomplete="off"></el-input>
+          <el-form-item label="密码"
+                        prop="pass">
+            <el-input type="password"
+                      v-model="ruleForm1.pass"
+                      autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('ruleForm1')">提交</el-button>
+            <el-button type="primary"
+                       @click="submitForm('ruleForm1')">提交</el-button>
             <el-button @click="resetForm('ruleForm1')">重置</el-button>
           </el-form-item>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="注册" name="reg">
-        <el-form
-          :model="ruleForm2"
-          status-icon
-          :rules="rules2"
-          ref="ruleForm2"
-          label-width="100px"
-          class="demo-ruleForm"
-        >
-          <el-form-item label="用户名" prop="username">
+      <el-tab-pane label="注册"
+                   name="reg">
+        <el-form :model="ruleForm2"
+                 status-icon
+                 :rules="rules2"
+                 ref="ruleForm2"
+                 label-width="100px"
+                 class="demo-ruleForm">
+          <el-form-item label="用户名"
+                        prop="username">
             <el-input v-model.number="ruleForm2.username"></el-input>
           </el-form-item>
-          <el-form-item label="密码" prop="pass">
-            <el-input type="password" v-model="ruleForm2.pass" autocomplete="off"></el-input>
+          <el-form-item label="密码"
+                        prop="pass">
+            <el-input type="password"
+                      v-model="ruleForm2.pass"
+                      autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="确认密码" prop="checkPass">
-            <el-input type="password" v-model="ruleForm2.checkPass" autocomplete="off"></el-input>
+          <el-form-item label="确认密码"
+                        prop="checkPass">
+            <el-input type="password"
+                      v-model="ruleForm2.checkPass"
+                      autocomplete="off"></el-input>
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
+            <el-button type="primary"
+                       @click="submitForm('ruleForm2')">提交</el-button>
             <el-button @click="resetForm('ruleForm2')">重置</el-button>
           </el-form-item>
         </el-form>
@@ -58,7 +70,7 @@ import { mapState, mapMutations, mapActions } from "vuex";
 export default {
   name: "login",
   props: ["valueNum"],
-  data() {
+  data () {
     var checkUsername = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("年龄不能为空"));
@@ -118,17 +130,20 @@ export default {
   },
   computed: {
     activeName: {
-      get: function() {
+      get: function () {
         if (this.valueNum == 0) {
           return "login";
         } else {
           return "reg";
         }
       },
-      set: function(value) {
+      set: function (value) {
         return value;
       }
     }
+  },
+  mounted () {
+    console.log(this.activeName)
   },
   methods: {
     ...mapMutations({
@@ -136,10 +151,10 @@ export default {
       setLogin: "setLogin"
     }),
     ...mapActions({ handleInfo: "handleInfo" }),
-    handleClick(tab, event) {
+    handleClick (tab, event) {
       console.log(tab);
     },
-    submitForm(formName) {
+    submitForm (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (formName == "ruleForm1") {
@@ -190,7 +205,7 @@ export default {
         }
       });
     },
-    resetForm(formName) {
+    resetForm (formName) {
       this.$refs[formName].resetFields();
     }
   }

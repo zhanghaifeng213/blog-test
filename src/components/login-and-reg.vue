@@ -1,25 +1,28 @@
 <template>
-  <el-dialog :visible.sync="dialogVisible" width="30%">
-    <Login @closeModel="closeModel" :valueNum="valueNum"></Login>
+  <el-dialog :visible.sync="dialogVisible"
+             width="500px"
+             v-if="dialogVisible">
+    <Login @closeModel="closeModel"
+           :valueNum="valueNum"></Login>
   </el-dialog>
 </template>
 <script>
 import Login from "./login";
 export default {
-  data() {
+  data () {
     return {
       dialogVisible: false,
       valueNum: 0
     };
   },
   methods: {
-    init(val) {
+    init (val) {
       this.dialogVisible = true;
       this.$nextTick(() => {
         this.valueNum = val;
       });
     },
-    closeModel() {
+    closeModel () {
       this.dialogVisible = false;
     }
   },
