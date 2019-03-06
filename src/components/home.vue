@@ -1,55 +1,37 @@
 <template>
   <div class="home">
-    <div class="publish-article">
-      <el-button type="primary">发表文章</el-button>
-    </div>
-    <div class="content">
-      <el-row :gutter="20">
-        <el-col :span="18">
-          <div class="grid-content bg-purple">
-            <div class="list-wrap">
-              <div class="article-list" v-for="(item,index) in articleList" :key="index">
-                <div class="avatar">
-                  <img width="45" height="45" :src="changeImg(item.author.avatar)">
-                </div>
-                <div class="description">
-                  <div class="line1">
-                    <el-tag size="small">{{item.tips}}</el-tag>
-                    <span v-html="item.title"></span>
-                  </div>
-                  <div class="line2">
-                    <span>{{item.author.username}}&nbsp;&nbsp;&nbsp;&nbsp;{{changeTime(item.updatedAt)}}</span>
-                    <span>
-                      <i class="el-icon-document"></i>
-                      {{item.commentNum}}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <el-pagination
-                background
-                layout="prev, pager, next"
-                :total="total"
-                :page-size="pageSize"
-                :current-page="currentPage"
-                @current-change="currentChange"
-              ></el-pagination>
-            </div>
+    <div class="list-wrap">
+      <div
+        class="article-list"
+        v-for="(item,index) in articleList"
+        :key="index"
+        @click="goDetail(item)"
+      >
+        <div class="avatar">
+          <img width="45" height="45" :src="changeImg(item.author.avatar)">
+        </div>
+        <div class="description">
+          <div class="line1">
+            <el-tag size="small">{{item.tips}}</el-tag>
+            <span v-html="item.title"></span>
           </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple">
-            <div class="gonggao">
-              <el-card class="box-card">
-                <div slot="header" class="clearfix">
-                  <span>卡片名称</span>
-                </div>
-                <div v-for="o in 4" :key="o" class="text item">{{'列表内容 ' + o }}</div>
-              </el-card>
-            </div>
+          <div class="line2">
+            <span>{{item.author.username}}&nbsp;&nbsp;&nbsp;&nbsp;{{changeTime(item.updatedAt)}}</span>
+            <span>
+              <i class="el-icon-document"></i>
+              {{item.commentNum}}
+            </span>
           </div>
-        </el-col>
-      </el-row>
+        </div>
+      </div>
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="total"
+        :page-size="pageSize"
+        :current-page="currentPage"
+        @current-change="currentChange"
+      ></el-pagination>
     </div>
   </div>
 </template>
@@ -84,6 +66,12 @@ export default {
     currentChange(val) {
       this.pageNum = val;
       this.init();
+    },
+    goDetail(item) {
+      this.$router.push({
+        name: "article-detail",
+        params: item
+      });
     }
   }
 };
@@ -91,52 +79,42 @@ export default {
 
 <style lang="scss">
 .home {
-  .publish-article {
-    text-align: right;
-    margin-bottom: 20px;
+  .list-wrap {
     background: #fff;
-    padding: 0 200px;
-  }
-  .content {
-    padding: 0 200px;
-    margin-bottom: 20px;
-    .list-wrap {
-      background: #fff;
-      .article-list {
+    .article-list {
+      display: flex;
+      height: 80px;
+      border-bottom: 1px dotted #e2e2e2;
+      align-items: center;
+      .avatar {
+        flex: 0 0 80px;
         display: flex;
-        height: 80px;
-        border-bottom: 1px dotted #e2e2e2;
         align-items: center;
-        .avatar {
-          flex: 0 0 80px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        .description {
-          width: 100%;
-          .line1 {
-            display: block;
-            max-width: 100%;
-            overflow: hidden;
-            margin-bottom: 5px;
-          }
-          .line2 {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding-right: 10px;
-            box-sizing: border-box;
-            color: gray;
-            font-size: 12px;
-          }
-        }
+        justify-content: center;
       }
-      .el-pagination {
+      .description {
         width: 100%;
-        padding: 20px 0;
-        text-align: center;
+        .line1 {
+          display: block;
+          max-width: 100%;
+          overflow: hidden;
+          margin-bottom: 5px;
+        }
+        .line2 {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          padding-right: 10px;
+          box-sizing: border-box;
+          color: gray;
+          font-size: 12px;
+        }
       }
+    }
+    .el-pagination {
+      width: 100%;
+      padding: 20px 0;
+      text-align: center;
     }
   }
 }

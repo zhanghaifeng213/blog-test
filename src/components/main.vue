@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <div class="header-wrap">
       <div class="nav">
         <el-menu
@@ -35,8 +35,31 @@
         </div>
       </div>
     </div>
+    <div class="publish-article">
+      <el-button type="primary" v-if="$route.name==='home'">发表文章</el-button>
+    </div>
     <login-and-reg ref="model"></login-and-reg>
-    <router-view/>
+    <div class="content">
+      <el-row :gutter="20">
+        <el-col :span="18">
+          <div class="grid-content bg-purple">
+            <router-view/>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div class="grid-content bg-purple">
+            <div class="gonggao">
+              <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                  <span>卡片名称</span>
+                </div>
+                <div v-for="o in 4" :key="o" class="text item">{{'列表内容 ' + o }}</div>
+              </el-card>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
   </div>
 </template>
 <script>
@@ -61,7 +84,9 @@ export default {
       setLogout: "setLogout"
     }),
     handleSelect(key, keyPath) {
-      console.log(key, keyPath);
+      this.$router.push({
+        name: "home"
+      });
     },
     login() {
       this.$refs.model.init(0);
@@ -83,21 +108,33 @@ export default {
 };
 </script>
 <style lang="scss">
-.header-wrap {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 200px;
-  background: #fff;
-  .user-info {
+.main {
+  & > .header-wrap {
     display: flex;
-    .el-button {
-      margin-right: 20px;
-    }
-    .avatar-wrap {
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 200px;
+    background: #fff;
+    .user-info {
       display: flex;
-      align-items: center;
+      .el-button {
+        margin-right: 20px;
+      }
+      .avatar-wrap {
+        display: flex;
+        align-items: center;
+      }
     }
+  }
+  & > .publish-article {
+    text-align: right;
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 0 200px;
+  }
+  & > .content {
+    padding: 0 200px;
+    margin-bottom: 20px;
   }
 }
 </style>
