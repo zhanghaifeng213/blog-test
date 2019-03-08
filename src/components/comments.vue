@@ -28,6 +28,7 @@
 </template>
 <script>
 import { commentLists, publishComment } from "@/api/data";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -39,15 +40,20 @@ export default {
   mounted() {
     this.getComments();
   },
+  computed: {
+    ...mapState({ hasLogin: state => state.hasLogin })
+  },
   methods: {
     getComments() {
-      commentLists(this.articleId).then(res => {
-        if (res.data.comment.length > 0) {
-          this.comments = res.data.comment;
-        } else {
-          this.comments = [];
-        }
-      });
+      if (this.articleId) {
+        commentLists(this.articleId).then(res => {
+          if (res.data.comment.length > 0) {
+            this.comments = res.data.comment;
+          } else {
+            this.comments = [];
+          }
+        });
+      }
     },
     changeImg(url) {
       return process.env.ROOT + url;
@@ -56,24 +62,32 @@ export default {
       return new Date(time).toLocaleString();
     },
     publishComment() {
-      if (this.textarea.trim()) {
-        let data = {
-          article: this.articleId,
-          content: this.textarea.trim()
-        };
-        publishComment(data).then(res => {
-          if (res.data.status == "1") {
-            this.$message({
-              message: res.data.msg,
-              type: "success"
-            });
-            this.textarea = "";
-            this.getComments();
-          }
-        });
+      console.log(this.hasLogin);
+      if (this.hasLogin) {
+        if (this.textarea.trim()) {
+          let data = {
+            article: this.articleId,
+            content: this.textarea.trim()
+          };
+          publishComment(data).then(res => {
+            if (res.data.status == "1") {
+              this.$message({
+                message: res.data.msg,
+                type: "success"
+              });
+              this.textarea = "";
+              this.getComments();
+            }
+          });
+        } else {
+          this.$message({
+            message: "评论不能为空",
+            type: "info"
+          });
+        }
       } else {
         this.$message({
-          message: "评论不能为空",
+          message: "请先登陆",
           type: "info"
         });
       }

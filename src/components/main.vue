@@ -36,17 +36,17 @@
       </div>
     </div>
     <div class="publish-article">
-      <el-button type="primary" v-if="$route.name==='home'">发表文章</el-button>
+      <el-button type="primary" v-if="$route.name==='home'" @click="publishArticle">发表文章</el-button>
     </div>
     <login-and-reg ref="model"></login-and-reg>
     <div class="content">
       <el-row :gutter="20">
-        <el-col :span="18">
+        <el-col :span="spanVal">
           <div class="grid-content bg-purple">
             <router-view/>
           </div>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="6" v-if="spanVal!=24">
           <div class="grid-content bg-purple">
             <div class="gonggao">
               <el-card class="box-card">
@@ -68,10 +68,13 @@ import { mapState, mapMutations } from "vuex";
 export default {
   data() {
     return {
-      activeIndex: "1"
+      activeIndex: "1",
+      spanVal: 18
     };
   },
-  mounted() {},
+  mounted() {
+    this.getRoute();
+  },
   computed: {
     ...mapState({
       username: state => state.username,
@@ -100,6 +103,23 @@ export default {
     },
     changeImg(url) {
       return process.env.ROOT + url;
+    },
+    publishArticle() {
+      this.$router.push({
+        name: "publish-article"
+      });
+    },
+    getRoute() {
+      if (this.$route.name == "publish-article") {
+        this.spanVal = 24;
+      } else {
+        this.spanVal = 18;
+      }
+    }
+  },
+  watch: {
+    $route() {
+      this.getRoute();
     }
   },
   components: {

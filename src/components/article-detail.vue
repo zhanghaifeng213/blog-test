@@ -26,7 +26,6 @@ export default {
         name: "home"
       });
     } else {
-      console.log(this.$route.params);
       this.contentDetail = this.$route.params;
     }
   },

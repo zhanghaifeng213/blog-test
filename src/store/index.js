@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Cookies from "js-cookie";
-import { clearLoginInfo } from "@/libs/tool.js"
+import { clearLoginInfo, hasLogin } from "@/libs/tool.js"
 import { info } from '../api/user';
 Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     username: Cookies.get("username"),
-    hasLogin: Cookies.get("username"),
+    hasLogin: hasLogin(),
     avatar: "",
     role: ''
   },
