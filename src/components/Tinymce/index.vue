@@ -3,7 +3,7 @@
     <textarea class="tinymce-textarea" :id="tinymceId"></textarea>
     <!-- <div class="editor-custom-btn-container">
       <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK"></editorImage>
-    </div> -->
+    </div>-->
   </div>
 </template>
 
@@ -37,7 +37,7 @@ export default {
     height: {
       type: Number,
       required: false,
-      default: 360
+      default: 300
     }
   },
   data() {

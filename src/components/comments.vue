@@ -101,6 +101,7 @@ export default {
   margin-top: 10px;
   background: #fff;
   padding: 0 20px 10px;
+  box-sizing: border-box;
   & > .title {
     text-align: center;
     font-size: 20px;

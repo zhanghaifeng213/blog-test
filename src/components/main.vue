@@ -18,7 +18,7 @@
       </div>
       <div class="reg-and-login">
         <div class="user-info" v-if="hasLogin">
-          <el-button type="text">个人中心</el-button>
+          <el-button type="text" @click="goPersonal">个人中心</el-button>
           <el-dropdown @command="logout">
             <span class="avatar-wrap">
               <img width="40" height="40" :src="changeImg(avatar)">
@@ -110,11 +110,19 @@ export default {
       });
     },
     getRoute() {
-      if (this.$route.name == "publish-article") {
+      if (
+        this.$route.name == "publish-article" ||
+        this.$route.meta.tipShow == false
+      ) {
         this.spanVal = 24;
       } else {
         this.spanVal = 18;
       }
+    },
+    goPersonal() {
+      this.$router.push({
+        name: "user"
+      });
     }
   },
   watch: {

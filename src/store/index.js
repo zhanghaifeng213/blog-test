@@ -7,7 +7,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     username: Cookies.get("username"),
-    hasLogin: hasLogin(),
+    hasLogin: false,
     avatar: "",
     role: ''
   },
@@ -37,6 +37,7 @@ const store = new Vuex.Store({
         if (res.data.data) {
           commit('setAvatar', res.data.data.avatar)
           commit('setRole', res.data.data.role)
+          commit('setLogin', true)
         }
       })
     }

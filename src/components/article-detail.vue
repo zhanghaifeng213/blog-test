@@ -1,7 +1,7 @@
 <template>
   <div class="article-wrap">
     <div class="article-detail">
-      <h2>{{contentDetail.title}}</h2>
+      <h2 class="title">{{contentDetail.title}}</h2>
       <div class="sub-title" v-if="JSON.stringify(contentDetail) != '{}'">
         <span>{{contentDetail.author.username}}</span>
         <span>发表于：{{changeTime(contentDetail.created)}}</span>
@@ -46,14 +46,20 @@ export default {
     padding: 10px;
     max-height: calc(100vh - 300px);
     overflow: auto;
-    & > h2 {
+    & > .title {
       text-align: center;
+      font-size: 32px;
+      font-weight: 400;
+      line-height: 60px;
     }
     .sub-title {
       text-align: center;
       & > span {
         margin-right: 10px;
       }
+    }
+    .content {
+      padding: 30px;
     }
   }
 }
