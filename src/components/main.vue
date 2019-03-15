@@ -35,11 +35,11 @@
         </div>
       </div>
     </div>
-    <div class="publish-article">
+    <div class="publish-article" v-show="hasPadding">
       <el-button type="primary" v-if="$route.name==='home'" @click="publishArticle">发表文章</el-button>
     </div>
     <login-and-reg ref="model"></login-and-reg>
-    <div class="content">
+    <div :class="{content:hasPadding}">
       <el-row :gutter="20">
         <el-col :span="spanVal">
           <div class="grid-content bg-purple">
@@ -69,7 +69,8 @@ export default {
   data() {
     return {
       activeIndex: "1",
-      spanVal: 18
+      spanVal: 18,
+      hasPadding: true
     };
   },
   mounted() {
@@ -110,6 +111,11 @@ export default {
       });
     },
     getRoute() {
+      if (this.$route.meta.tipShow == false) {
+        this.hasPadding = false;
+      } else {
+        this.hasPadding = true;
+      }
       if (
         this.$route.name == "publish-article" ||
         this.$route.meta.tipShow == false

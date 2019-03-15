@@ -25,3 +25,10 @@ export const publishArticle = (data) => {
     data
   })
 }
+export const uploadAvatar = (data) => {
+  return http({
+    method: 'post',
+    url: http.adornUrl('upload'),
+    data
+  })
+}

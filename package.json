@@ -17,6 +17,7 @@
     "node-sass": "^4.11.0",
     "tinymce": "^5.0.2",
     "vue": "^2.5.2",
+    "vue-cropper": "^0.4.8",
     "vue-router": "^3.0.1",
     "vuex": "^3.1.0"
   },
